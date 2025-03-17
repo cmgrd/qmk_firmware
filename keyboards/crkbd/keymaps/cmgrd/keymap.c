@@ -37,37 +37,54 @@ const uint32_t unicode_map[] PROGMEM = {
 };
 
 enum combos {
-    SPACE_ENTER_LEADER
-  };
-  
-  const uint16_t PROGMEM space_enter_leader_combo[] = {KC_SPC, KC_ENT, COMBO_END};
-  
-  combo_t key_combos[] = {
-    [SPACE_ENTER_LEADER] = COMBO(space_enter_leader_combo, QK_LEAD),
-  };
+    COMBO_PARENTHESES,
+    COMBO_CURLY,
+    COMBO_TAB,
+    COMBO_ALTTAB,
+    COMBO_ALTENTER,
+};
 
+const uint16_t PROGMEM combo_parentheses[] = {KC_W, KC_E, COMBO_END};
+const uint16_t PROGMEM combo_curly[] = {KC_E, KC_R, COMBO_END};
+const uint16_t PROGMEM combo_tab[] = {KC_I, KC_O, COMBO_END};
+const uint16_t PROGMEM combo_alttab[] = {KC_I, KC_O, COMBO_END};
+const uint16_t PROGMEM combo_altenter[] = {KC_COMM, KC_DOT, COMBO_END};
+
+combo_t key_combos[] = {
+    [COMBO_PARENTHESES] = COMBO(combo_parentheses, KC_LEFT_PAREN),
+    [COMBO_CURLY] = COMBO(combo_curly, KC_LEFT_CURLY_BRACE),
+    [COMBO_TAB] = COMBO(combo_tab, KC_TAB),
+    [COMBO_ALTTAB] = COMBO_ACTION(combo_alttab),
+    [COMBO_ALTENTER] = COMBO_ACTION(combo_altenter),
+};
+
+void process_combo_event(uint16_t combo_index, bool pressed) {
+    switch (combo_index) {
+        case COMBO_ALTENTER:
+            if (pressed) {
+                tap_code16(A(KC_ENTER));
+            }
+            break;
+        case COMBO_ALTTAB:
+            if (pressed) {
+                tap_code16(A(KC_TAB));
+            }
+            break;
+    }
+}
 
 void leader_start_user(void) {
     // Do something when the leader key is pressed
 }
 
 void leader_end_user(void) {
-    if (leader_sequence_one_key(KC_F)) {
-        set_oneshot_layer(1, ONESHOT_START);
-        clear_oneshot_layer_state(ONESHOT_PRESSED);
-    } else if (leader_sequence_one_key(KC_D)) {
-        set_oneshot_layer(2, ONESHOT_START);
-        clear_oneshot_layer_state(ONESHOT_PRESSED);
-    } else if (leader_sequence_one_key(KC_S)) {
-        set_oneshot_layer(3, ONESHOT_START);
-        clear_oneshot_layer_state(ONESHOT_PRESSED);
-    } else if (leader_sequence_two_keys(KC_D, KC_K)) { 
-        layer_on(4);
-    } else if (leader_sequence_one_key(KC_V)) {
+    if (leader_sequence_one_key(KC_SPC)) {
         layer_on(1);
-    } else if (leader_sequence_one_key(KC_C)) {
+    } else if (leader_sequence_one_key(KC_BSPC)) {
         layer_on(2);
-    } else if (leader_sequence_one_key(KC_X)) {
+    } else if (leader_sequence_one_key(KC_DEL)) {
+        layer_on(4);
+    } else if (leader_sequence_one_key(KC_ENT)) {
         layer_on(3);
     } else if (leader_sequence_two_keys(KC_W, KC_E)) {
         SEND_STRING("christopher.maigaard@vippsmobilepay.com");
@@ -82,11 +99,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //,--------------------------------------------------------------.  ,--------------------------------------------------------------.
  HYPR_T(KC_TAB),    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,   KC_NO,      KC_NO,    KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,  RGUI_T(KC_APP),
     //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
- LSFT_T(KC_ESC),    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,   KC_NO,      KC_NO,    KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, LALT_T(KC_DOUBLE_QUOTE),
+ LSFT_T(KC_ESC),    RGUI_T(KC_A),ALT_T(KC_S),CTL_T(KC_D), KC_F, KC_G, KC_NO,      KC_NO,    KC_H,     KC_J,CTL_T(KC_K),ALT_T(KC_L), RGUI_T(KC_SCLN), LALT_T(KC_DOUBLE_QUOTE),
     //|--------+--------+--------+--------+--------+--------+--------'  `--------+--------+--------+--------+--------+--------+--------|
 LCTL_T(KC_MINUS),   KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_QUESTION, C_S_T(KC_INSERT),
     //|--------+--------+--------+--------+--------+--------+--------.  ,--------+--------+--------+--------+--------+--------+--------|
-                     LALT_T(KC_DEL),  LCTL_T(KC_BSPC),  LT(1, KC_SPC),   LCTL_T(KC_ENT), OSM(MOD_RSFT), QK_LEAD
+                       LT(4, KC_DEL),  LT(2, KC_BSPC),  LT(1, KC_SPC),   LT(3, KC_ENT), OSM(MOD_RSFT), QK_LEAD
                                         //`--------------------------'  `--------------------------'
     ),
     [1] = LAYOUT_split_3x6_3_ex2(
