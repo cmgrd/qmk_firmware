@@ -37,23 +37,14 @@ const uint32_t unicode_map[] PROGMEM = {
 };
 
 enum combos {
-    COMBO_PARENTHESES,
-    COMBO_CURLY,
-    COMBO_TAB,
     COMBO_ALTTAB,
     COMBO_ALTENTER,
 };
 
-const uint16_t PROGMEM combo_parentheses[] = {KC_W, KC_E, COMBO_END};
-const uint16_t PROGMEM combo_curly[] = {KC_E, KC_R, COMBO_END};
-const uint16_t PROGMEM combo_tab[] = {KC_I, KC_O, COMBO_END};
 const uint16_t PROGMEM combo_alttab[] = {KC_I, KC_O, COMBO_END};
 const uint16_t PROGMEM combo_altenter[] = {KC_COMM, KC_DOT, COMBO_END};
 
 combo_t key_combos[] = {
-    [COMBO_PARENTHESES] = COMBO(combo_parentheses, KC_LEFT_PAREN),
-    [COMBO_CURLY] = COMBO(combo_curly, KC_LEFT_CURLY_BRACE),
-    [COMBO_TAB] = COMBO(combo_tab, KC_TAB),
     [COMBO_ALTTAB] = COMBO_ACTION(combo_alttab),
     [COMBO_ALTENTER] = COMBO_ACTION(combo_altenter),
 };
