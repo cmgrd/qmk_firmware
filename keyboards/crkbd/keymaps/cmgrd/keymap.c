@@ -72,7 +72,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case LIT_GRV:
             if (record->event.pressed) {
-                SEND_STRING("`"); // sends literal backtick character
+                send_unicode_string("`"); // sends literal backtick character
             }
             return false; // skip further processing
     }

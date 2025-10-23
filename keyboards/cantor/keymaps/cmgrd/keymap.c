@@ -54,7 +54,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case LIT_GRV:
             if (record->event.pressed) {
-                SEND_STRING("`"); // sends literal backtick character
+                send_unicode_string("`"); // sends literal backtick character
             }
             return false; // skip further processing
     }
@@ -86,9 +86,6 @@ void leader_end_user(void) {
         reset_keyboard();
     }
 }
-
-
-
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {                                                   
         [0] = LAYOUT_split_3x6_3(
